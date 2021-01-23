@@ -47,12 +47,56 @@ function updateDOM(providedData = data) {
 	});
 }
 
+// Sort
+
+function sortByRichest () {
+	data.sort((a,b) => 
+		b.money - a.money
+	);
+
+	updateDOM();
+}
+
+// Double money 
+
+function doubleMoney() {
+	data = data.map(user => {
+		return {
+			...user, 
+			money: user.money * 2
+		}
+	});
+
+	updateDOM();
+}
+
+// Show millionaires
+
+function showMillionaires () {
+	data = data.filter(item => item.money >= 1000000);
+
+	updateDOM();
+}
+
 // Format number as money
 
 function formatMoney(number) {
 	return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
+function calculateWealth() {
+	const wealth = data.reduce ((acc, user) => (acc += user.money), 0);
+
+	const wealthEl = document.createElement('div');
+	wealthEl.innerHTML = `<h3>Total Wealth: <strong></strong>${formatMoney(wealth)}</h3>`;
+
+	main.appendChild(wealthEl);
+}
+
 // Event Listeners
 
 addUserBtn.addEventListener('click', getRandomUser);
+doubleBtn.addEventListener('click', doubleMoney);
+sortBtn.addEventListener('click', sortByRichest);
+showMillionairesBtn.addEventListener('click', showMillionaires);
+calculateWealthBtn.addEventListener('click', calculateWealth);
